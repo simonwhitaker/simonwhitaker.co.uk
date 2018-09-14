@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Problem/Solution</title>
+  <style>
+    * {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    h1, h2 {
+      font-weight: 300;
+    }
+    .card {
+      background-image: url("index-card-bg.png");
+      height: 297px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      margin: 10px 0;
+      padding: 0;
+      position: relative;
+    }
+    .card-text {
+      margin: 0;
+      width: 90%;
+      text-align: center;
+      font-size: 30px;
+      font-family: 'Marker Felt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: #111;
+    }
+    .card-container {
+      display: inline-block;
+      padding: 10px;
+      width: 420px;
+      vertical-align: top;
+      text-align: center;
+    }
+    .red {
+      background-color: #df8da2;
+    }
+    .yellow {
+      background-color: #ecdc7a;
+    }
+    .green {
+      background-color: #c1d7a8;
+    }
+    .blue {
+      background-color: #bedce9;
+    }
+    .card-values {
+      width: 400px;
+      /* border: 0; */
+      /* margin: 0; */
+      padding: 9px;
+    }
+    .button {
+      font-size: 13px;
+      padding: 5px;
+    }
+  </style>
+  <script>
+    const SAMPLE_PROBLEMS = [
+      "Antisemitism in the Labour Party",
+      "Global warming",
+      "Sexual harassment in the workplace",
+      "The rising price of butter",
+    ];
+    const SAMPLE_SOLUTIONS = [
+      "Blockchain",
+      "Augmented reality",
+      "Cats with thumbs",
+    ];
+    const PROBLEMS_KEY = 'problems';
+    const SOLUTIONS_KEY = 'solutions';
+    var problems;
+    var solutions;
+
+    function saveProblems() {
+      localStorage.setItem(PROBLEMS_KEY, JSON.stringify(problems));
+    }
+
+    function saveSolutions() {
+      localStorage.setItem(SOLUTIONS_KEY, JSON.stringify(solutions));
+    }
+
+    function handleListChanges() {
+      problems = document.getElementById('problems').value.trim().split('\n');
+      saveProblems();
+
+      solutions = document.getElementById('solutions').value.trim().split('\n');
+      saveSolutions();
+    }
+
+    function randomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+    function randomize() {
+      var problem_index = randomInt(problems.length);
+      var solution_index = randomInt(solutions.length);
+      document.getElementById('problem').innerHTML = problems[problem_index].trim();
+      document.getElementById('solution').innerHTML = solutions[solution_index].trim();
+    }
+
+    function initialize() {
+      problems = JSON.parse(localStorage.getItem(PROBLEMS_KEY));
+      if (problems === null) {
+        problems = SAMPLE_PROBLEMS;
+        saveProblems();
+      }
+      solutions =  JSON.parse(localStorage.getItem(SOLUTIONS_KEY));
+      if (solutions === null) {
+        solutions = SAMPLE_SOLUTIONS;
+        saveSolutions();
+      }
+
+      document.getElementById('problems').value = problems.join('\n');
+      document.getElementById('solutions').value = solutions.join('\n');
+    }
+
+    window.onload = () => {
+      initialize();
+      randomize();
+    };
+  </script>
+</head>
+<body>
+  <div id="main">
+    <p>Enter some problems and solutions, click Randomize, and get riffing! Based on an exercise from <a href="https://www.amazon.co.uk/dp/1473607183/">Get Started In Stand-Up Comedy</a> by <a href="http://loganmurray.com">Logan Murray</a>.</p>
+    <div id="cards">
+      <div class="card-container">
+        <h1>Problem</h1>
+        <div class="card red">
+          <div class="card-text" id="problem">A problem here</div>
+        </div>
+      </div>
+      <div class="card-container">
+        <h1>Solution</h1>
+        <div class="card yellow">
+          <div class="card-text" id="solution">A solution here</div>
+        </div>
+      </div>
+    </div>
+    <button class="button" onclick="randomize()">Randomize!</button>
+    <h2>My problems</h2>
+    <div>
+      <textarea class="card-values" id="problems" cols="80" rows="10" onkeyup="handleListChanges()" onchange="handleListChanges()"></textarea>
+    </div>
+    <h2>My solutions</h2>
+    <div>
+      <textarea class="card-values" id="solutions" cols="80" rows="10" onkeyup="handleListChanges()" onchange="handleListChanges()"></textarea>
+    </div>
+  </div>
+</body>
+</html>
