@@ -34,10 +34,10 @@
     }
     .card-container {
       display: inline-block;
-      padding: 10px;
       width: 420px;
       vertical-align: top;
       text-align: center;
+      margin-right: 20px;
     }
     .red {
       background-color: #df8da2;
@@ -60,6 +60,17 @@
     .button {
       font-size: 13px;
       padding: 5px;
+    }
+    /* Mobile Styles */
+    @media only screen and (max-width: 420px) {
+      .card-container {
+        width: 100%;
+      }
+      .card-values {
+        width: calc(100% - 10px);
+        margin: 0;
+        padding: 5px;
+      }
     }
   </style>
   <script>
